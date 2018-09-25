@@ -27,9 +27,9 @@ namespace WebServiceSoa
         {
             InitializeComponent();
 
-            string v1 = System.Configuration.ConfigurationManager.AppSettings["k1"];
+            //string v1 = System.Configuration.ConfigurationManager.AppSettings["k1"];
            
-            comboBox_webServiceSelector.Items.Insert(0, v1);
+            //comboBox_webServiceSelector.Items.Insert(0, v1);
            
         }
 
