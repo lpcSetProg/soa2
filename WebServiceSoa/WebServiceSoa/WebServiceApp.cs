@@ -26,6 +26,11 @@ namespace WebServiceSoa
         public WebServiceApp()
         {
             InitializeComponent();
+
+            string v1 = System.Configuration.ConfigurationManager.AppSettings["k1"];
+           
+            comboBox_webServiceSelector.Items.Insert(0, v1);
+           
         }
 
 
@@ -37,7 +42,7 @@ namespace WebServiceSoa
         */
         private void comboBox_webServiceSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+        
         }
     }
 }
