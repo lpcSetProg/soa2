@@ -1,7 +1,7 @@
 ﻿/*
 * FILE : SOA_Assignment_02.cs
 * PROJECT : PROG3080 - Service Oriented Architecture - Assignment 2
-* PROGRAMMERS : Lev Cocarell and Bobby Vu 
+* PROGRAMMERS : Bobby Vu and Lev Cocarell
 * FIRST VERSION : 2018-24-12
 * DESCRIPTION :
 * 
@@ -15,6 +15,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -34,7 +35,8 @@ namespace WebServiceSoa
         XmlNode currentMethod;
         string currentMethodString;
 
-        Dictionary<string, dynamic> parameterDict;
+        Dictionary<string, Control> inputDictionary;
+        Dictionary<string, Control> outputDictionary;
 
         public WebServiceApp()
         {
@@ -79,28 +81,65 @@ namespace WebServiceSoa
         {
             currentMethodString = comboBox_methodSelector.Items[comboBox_methodSelector.SelectedIndex].ToString();
             currentMethod = currentWebService.SelectSingleNode("./Method[@name='" + currentMethodString + "']");
-            UpdateRequestUI();
+            UpdateUI();
         }
 
-        private void UpdateRequestUI()
+        private void UpdateUI()
         {
-            parameterDict = new Dictionary<string, dynamic>();
-            XmlNodeList parameterList = currentMethod.SelectNodes("./Request/Parameter");
-            int i = 0;
+            // Request UI
+            Button submitButton = new Button();
+            groupBox_request.Controls.Add(submitButton);
+            submitButton.Location = new Point(76, 25);
+            submitButton.Text = "Send";
+            submitButton.Click += new System.EventHandler(submitButton_Clicked);
+
+            inputDictionary = new Dictionary<string, Control>();
+            XmlNodeList inputList = currentMethod.SelectNodes("./Request/Parameter");
+            RenderUIFromParameterList(groupBox_request, inputList, inputDictionary);
+
+            // Response UI
+            outputDictionary = new Dictionary<string, Control>();
+            XmlNodeList outputList = currentMethod.SelectNodes("./Response/Parameter");
+            RenderUIFromParameterList(groupBox_response, outputList, outputDictionary);
+        }
+
+        private void submitButton_Clicked(object sender, EventArgs e)
+        {
+            // Send xml to webservice
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+            webRequest.Headers.Add("SOAPAction", action);
+            webRequest.ContentType = "text/xml;charset=\"utf-8\"";
+            webRequest.Accept = "text/xml";
+            webRequest.Method = "POST";
+        }
+
+        private void RenderUIFromParameterList(GroupBox targetGroupBox, XmlNodeList parameterList, Dictionary<string, Control> parameterDict)
+        {
+            int i = 55;
             foreach (XmlNode parameter in parameterList)
             {
                 Label lbl = new Label();
                 lbl.Text = parameter.Attributes["name"].InnerText;
-                TextBox tb = new TextBox();
-                
-                groupBox_request.Controls.Add(tb);
-                groupBox_request.Controls.Add(lbl);
-                tb.Location = new Point(10, i + 40);
+                Control ctrl = new Control();
+
+                switch(parameter.Attributes["inputType"].InnerText)
+                {
+                    case "textBox":
+                        ctrl = new TextBox();
+                        break;
+                    default:
+                        break;
+                }
+
+                targetGroupBox.Controls.Add(ctrl);
+                targetGroupBox.Controls.Add(lbl);
+                ctrl.Location = new Point(10, i + 40);
                 lbl.Location = new Point(7, i + 25);
 
                 i += 55;
-                parameterDict.Add(parameter.Attributes["name"].InnerText, tb);
+                parameterDict.Add(parameter.Attributes["name"].InnerText, ctrl);
             }
+
         }
     }
 }

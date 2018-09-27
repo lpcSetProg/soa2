@@ -35,10 +35,9 @@
             this.groupBox_services = new System.Windows.Forms.GroupBox();
             this.groupBox_request = new System.Windows.Forms.GroupBox();
             this.groupBox_response = new System.Windows.Forms.GroupBox();
-            this.textBox_result = new System.Windows.Forms.TextBox();
-            this.label_result = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox_services.SuspendLayout();
-            this.groupBox_response.SuspendLayout();
+            this.groupBox_request.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox_webServiceSelector
@@ -92,17 +91,17 @@
             // 
             // groupBox_request
             // 
+            this.groupBox_request.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.groupBox_request.Controls.Add(this.button1);
             this.groupBox_request.Location = new System.Drawing.Point(277, 12);
             this.groupBox_request.Name = "groupBox_request";
-            this.groupBox_request.Size = new System.Drawing.Size(227, 489);
+            this.groupBox_request.Size = new System.Drawing.Size(232, 489);
             this.groupBox_request.TabIndex = 5;
             this.groupBox_request.TabStop = false;
             this.groupBox_request.Text = "Request";
             // 
             // groupBox_response
             // 
-            this.groupBox_response.Controls.Add(this.textBox_result);
-            this.groupBox_response.Controls.Add(this.label_result);
             this.groupBox_response.Location = new System.Drawing.Point(549, 12);
             this.groupBox_response.Name = "groupBox_response";
             this.groupBox_response.Size = new System.Drawing.Size(227, 489);
@@ -110,21 +109,14 @@
             this.groupBox_response.TabStop = false;
             this.groupBox_response.Text = "Response";
             // 
-            // textBox_result
+            // button1
             // 
-            this.textBox_result.Location = new System.Drawing.Point(9, 43);
-            this.textBox_result.Name = "textBox_result";
-            this.textBox_result.Size = new System.Drawing.Size(196, 20);
-            this.textBox_result.TabIndex = 4;
-            // 
-            // label_result
-            // 
-            this.label_result.AutoSize = true;
-            this.label_result.Location = new System.Drawing.Point(6, 27);
-            this.label_result.Name = "label_result";
-            this.label_result.Size = new System.Drawing.Size(37, 13);
-            this.label_result.TabIndex = 2;
-            this.label_result.Text = "Result";
+            this.button1.Location = new System.Drawing.Point(84, 101);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // WebServiceApp
             // 
@@ -138,8 +130,7 @@
             this.Text = "Web Services ";
             this.groupBox_services.ResumeLayout(false);
             this.groupBox_services.PerformLayout();
-            this.groupBox_response.ResumeLayout(false);
-            this.groupBox_response.PerformLayout();
+            this.groupBox_request.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -153,8 +144,7 @@
         private System.Windows.Forms.GroupBox groupBox_services;
         private System.Windows.Forms.GroupBox groupBox_request;
         private System.Windows.Forms.GroupBox groupBox_response;
-        private System.Windows.Forms.TextBox textBox_result;
-        private System.Windows.Forms.Label label_result;
+        private System.Windows.Forms.Button button1;
     }
 }
 
