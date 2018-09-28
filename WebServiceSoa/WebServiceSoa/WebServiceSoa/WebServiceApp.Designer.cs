@@ -35,9 +35,10 @@
             this.groupBox_services = new System.Windows.Forms.GroupBox();
             this.groupBox_request = new System.Windows.Forms.GroupBox();
             this.groupBox_response = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.groupBox_services.SuspendLayout();
-            this.groupBox_request.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBox_webServiceSelector
@@ -91,9 +92,7 @@
             // 
             // groupBox_request
             // 
-            this.groupBox_request.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.groupBox_request.Controls.Add(this.button1);
-            this.groupBox_request.Location = new System.Drawing.Point(277, 12);
+            this.groupBox_request.Location = new System.Drawing.Point(276, 12);
             this.groupBox_request.Name = "groupBox_request";
             this.groupBox_request.Size = new System.Drawing.Size(232, 489);
             this.groupBox_request.TabIndex = 5;
@@ -109,20 +108,38 @@
             this.groupBox_response.TabStop = false;
             this.groupBox_response.Text = "Response";
             // 
-            // button1
+            // richTextBox1
             // 
-            this.button1.Location = new System.Drawing.Point(84, 101);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.richTextBox1.Location = new System.Drawing.Point(807, 12);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(537, 152);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "";
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.Location = new System.Drawing.Point(807, 180);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.Size = new System.Drawing.Size(537, 146);
+            this.richTextBox2.TabIndex = 1;
+            this.richTextBox2.Text = "";
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(807, 355);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.Size = new System.Drawing.Size(537, 146);
+            this.richTextBox3.TabIndex = 7;
+            this.richTextBox3.Text = "";
             // 
             // WebServiceApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(881, 513);
+            this.ClientSize = new System.Drawing.Size(1382, 513);
+            this.Controls.Add(this.richTextBox3);
+            this.Controls.Add(this.richTextBox2);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.groupBox_response);
             this.Controls.Add(this.groupBox_request);
             this.Controls.Add(this.groupBox_services);
@@ -130,7 +147,6 @@
             this.Text = "Web Services ";
             this.groupBox_services.ResumeLayout(false);
             this.groupBox_services.PerformLayout();
-            this.groupBox_request.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -144,7 +160,9 @@
         private System.Windows.Forms.GroupBox groupBox_services;
         private System.Windows.Forms.GroupBox groupBox_request;
         private System.Windows.Forms.GroupBox groupBox_response;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.RichTextBox richTextBox3;
     }
 }
 

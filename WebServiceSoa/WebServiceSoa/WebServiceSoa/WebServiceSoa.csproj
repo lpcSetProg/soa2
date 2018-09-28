@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Method.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="WebService.cs" />
     <Compile Include="WebServiceApp.cs">
       <SubType>Form</SubType>
     </Compile>
