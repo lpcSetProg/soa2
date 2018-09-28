@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <WebService name="Calculator" url="http://www.dneonline.com/calculator.asmx">
+    <Method name="Add"/>
+    <Method name="Subtract"/>
+    <Method name="Multiply"/>
+    <Method name="Divide"/>
+  </WebService>
+  <WebService name="Temperature Converter" url="http://www.dneonline.com/calculator.asmx">
+    <Method name="Add"/>
+    <Method name="Subtract"/>
+    <Method name="Multiply"/>
+    <Method name="Divide"/>
+  </WebService>
+  <WebService name="Dictionary Service" url="http://www.dneonline.com/calculator.asmx">
+    <Method name="Add"/>
+    <Method name="Subtract"/>
+    <Method name="Multiply"/>
+    <Method name="Divide"/>
+  </WebService>
+</Configuration>
