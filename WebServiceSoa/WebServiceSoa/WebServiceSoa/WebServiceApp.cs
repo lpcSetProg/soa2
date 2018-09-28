@@ -151,28 +151,28 @@ namespace WebServiceSoa
                     manager.AddNamespace("soap", "http://schemas.xmlsoap.org/soap/envelope/");
                     manager.AddNamespace("ns", currentWebService.actionPrefix);
                     XmlNode temp = result.SelectSingleNode("/soap:Envelope/soap:Body/ns:" + currentMethod.name + "Response/ns:" + param.name, manager);
+                    XmlNode temp1 = temp.SelectSingleNode(".//ns:Name", manager);
+                    //// what if this is list box
+                    //if (param.control.GetType() == typeof(TextBox))
+                    //{
+                    //    param.control.Text = temp.InnerText;
+                    //}
+                    //else if (param.control.GetType() == typeof(ListBox))
+                    //{
+                    //    if (param.type == TypeCode.String)
+                    //    {
+                    //        XmlNodeList tempChildren = temp.SelectNodes("./ns:string", manager);
+                    //        foreach (XmlNode tempChild in tempChildren)
+                    //        {
+                    //            ((ListBox)param.control).Items.Add(tempChild.InnerText);
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        // if it's an array but not string (array of int, date)
+                    //    }
 
-                    // what if this is list box
-                    if (param.control.GetType() == typeof(TextBox))
-                    {
-                        param.control.Text = temp.InnerText;
-                    }
-                    else if (param.control.GetType() == typeof(ListBox))
-                    {
-                        if (param.type == TypeCode.String)
-                        {
-                            XmlNodeList tempChildren = temp.SelectNodes("./ns:string", manager);
-                            foreach (XmlNode tempChild in tempChildren)
-                            {
-                                ((ListBox)param.control).Items.Add(tempChild.InnerText);
-                            }
-                        }
-                        else
-                        {
-                            // if it's an array but not string (array of int, date)
-                        }
-
-                    }
+                    //}
 
                 }
             }
