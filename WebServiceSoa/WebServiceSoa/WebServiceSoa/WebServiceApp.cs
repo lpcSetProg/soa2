@@ -7,6 +7,10 @@
 * 
 * 
 */
+// TODO:
+// - delete outputDictionary, inputDictionary
+// - take care of the special character parsing
+// - get dropdown from a list
 
 using System;
 using System.Collections.Generic;
@@ -56,7 +60,7 @@ namespace WebServiceSoa
 
                 // web service
                 WebService newWebService = new WebService(webServiceName, webServiceUrl, configFile);
-                
+
                 webServiceList.Add(webServiceName, newWebService);
 
             }
@@ -136,18 +140,40 @@ namespace WebServiceSoa
                 {
                     soapResult = rd.ReadToEnd();
                 }
-                
+
 
                 XmlDocument result = new XmlDocument();
+                richTextBox2.Text = soapResult;
                 result.LoadXml(soapResult);
-                foreach(Parameter param in currentMethod.responseParams)
+                foreach (Parameter param in currentMethod.responseParams)
                 {
                     XmlNamespaceManager manager = new XmlNamespaceManager(result.NameTable);
-                    manager.AddNamespace("soap12", "http://schemas.xmlsoap.org/wsdl/soap12/");
-                    richTextBox1.Text = soapResult;
-                    richTextBox2.Text = "/soap12:Envelope/soap12:Body/" + currentMethod.name + "Response/" + param.name;
-                    XmlNode temp = result.SelectSingleNode("/soap12:Envelope/soap12:Body/" + currentMethod.name + "Response/" + param.name, manager);
-                    //outputDictionary[param.name].Text = temp.Value;
+                    manager.AddNamespace("soap", "http://schemas.xmlsoap.org/soap/envelope/");
+                    manager.AddNamespace("ns", currentWebService.actionPrefix);
+                    XmlNode temp = result.SelectSingleNode("/soap:Envelope/soap:Body/ns:" + currentMethod.name + "Response/ns:" + param.name, manager);
+
+                    // what if this is list box
+                    if (param.control.GetType() == typeof(TextBox))
+                    {
+                        param.control.Text = temp.InnerText;
+                    }
+                    else if (param.control.GetType() == typeof(ListBox))
+                    {
+                        if (param.type == TypeCode.String)
+                        {
+                            XmlNodeList tempChildren = temp.SelectNodes("./ns:string", manager);
+                            foreach (XmlNode tempChild in tempChildren)
+                            {
+                                ((ListBox)param.control).Items.Add(tempChild.InnerText);
+                            }
+                        }
+                        else
+                        {
+                            // if it's an array but not string (array of int, date)
+                        }
+
+                    }
+
                 }
             }
         }
@@ -158,7 +184,8 @@ namespace WebServiceSoa
             //var action = "http://tempuri.org/Add";
             // Send xml to webservice
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
-            webRequest.ContentType = "application/soap+xml; charset=utf-8";
+            webRequest.Headers.Add("SOAPAction", action);
+            webRequest.ContentType = "text/xml;charset=\"utf-8\"";
             webRequest.Accept = "text/xml";
             webRequest.Method = "POST";
             return webRequest;
@@ -171,26 +198,26 @@ namespace WebServiceSoa
             string xmlBody = "<" + currentMethod.name + " xmlns=\"" + currentWebService.actionPrefix + "\">";
             foreach (Parameter param in currentMethod.requestParams)
             {
-                xmlBody += "<" + param.name + ">" + inputDictionary[param.name].Text + "</" + param.name + ">";
+                xmlBody += "<" + param.name + ">" + param.Value + "</" + param.name + ">";
             }
-            xmlBody += "</" + currentMethod.name + ">";
-            soapEnvelopeDocument.LoadXml("<soap12:Envelope " +
-                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-                "xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">" +
-                "<soap12:Body>" + 
-                xmlBody +
-                "</soap12:Body>" +
-                "</soap12:Envelope>");
 
-            richTextBox3.Text = "<soap12:Envelope " +
+            xmlBody += "</" + currentMethod.name + ">";
+            soapEnvelopeDocument.LoadXml("<soap:Envelope " +
                 "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
                 "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
-                "xmlns:soap12=\"http://www.w3.org/2003/05/soap-envelope\">" +
-                "<soap12:Body>" +
+                "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                "<soap:Body>" +
                 xmlBody +
-                "</soap12:Body>" +
-                "</soap12:Envelope>";
+                "</soap:Body>" +
+                "</soap:Envelope>");
+            richTextBox1.Text = "<soap:Envelope " +
+                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+                "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+                "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">" +
+                "<soap:Body>" +
+                xmlBody +
+                "</soap:Body>" +
+                "</soap:Envelope>";
             return soapEnvelopeDocument;
         }
 
@@ -209,16 +236,7 @@ namespace WebServiceSoa
             {
                 Label lbl = new Label();
                 lbl.Text = param.name;
-                Control ctrl = new Control();
-
-                switch(param.type)
-                {
-                    case TypeCode.Int32:
-                        ctrl = new TextBox();
-                        break;
-                    default:
-                        break;
-                }
+                Control ctrl = param.control;
 
                 targetGroupBox.Controls.Add(ctrl);
                 targetGroupBox.Controls.Add(lbl);
@@ -226,7 +244,6 @@ namespace WebServiceSoa
                 lbl.Location = new Point(7, i + 25);
 
                 i += 55;
-                parameterDict.Add(param.name, ctrl);
             }
 
         }
