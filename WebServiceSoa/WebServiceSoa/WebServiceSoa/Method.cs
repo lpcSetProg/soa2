@@ -13,9 +13,9 @@ namespace WebServiceSoa
         public List<Parameter> requestParams;
         public List<Parameter> responseParams;
 
-        public Method(XmlNode methodNode, XmlDocument wsdlFile, XmlNamespaceManager manager)
+        public Method(XmlNode methodNodeFromConfig, XmlDocument wsdlFile, XmlNamespaceManager manager)
         {
-            name = methodNode.Attributes["name"].InnerText;
+            name = methodNodeFromConfig.Attributes["name"].InnerText;
             requestParams = new List<Parameter>();
             responseParams = new List<Parameter>();
 
@@ -25,17 +25,32 @@ namespace WebServiceSoa
             string wsdlPostfix = "']/s:complexType/s:sequence/s:element";
             XmlNodeList requestParamsFromWsdl = wsdlFile.SelectNodes(wsdlPrefix + name + wsdlPostfix, manager);
             XmlNodeList responseParamsFromWsdl = wsdlFile.SelectNodes(wsdlPrefix + name + "Response" + wsdlPostfix, manager);
+
+           
+
             foreach (XmlNode paramNode in requestParamsFromWsdl)
             {
                 Parameter newParameter = new Parameter(paramNode);
                 requestParams.Add(newParameter);
             }
 
+            string complexResponse = methodNodeFromConfig.Attributes["complexResponse"] != null ? methodNodeFromConfig.Attributes["complexResponse"].InnerText : null;
             foreach (XmlNode paramNode in responseParamsFromWsdl)
             {
                 Parameter newParameter = new Parameter(paramNode);
+
+                if (complexResponse == "true")
+                {
+                    XmlNode paramNodeFromConfig = methodNodeFromConfig.SelectSingleNode("./Response/Parameter[@name='" + paramNode.Attributes["name"].InnerText + "']");
+                    newParameter = new Parameter(paramNodeFromConfig, "");
+                }
+                
                 responseParams.Add(newParameter);
             }
+            
+            
+
+            
         }
     }
 }

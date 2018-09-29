@@ -100,16 +100,16 @@
             // 
             // groupBox_response
             // 
-            this.groupBox_response.Location = new System.Drawing.Point(549, 12);
+            this.groupBox_response.Location = new System.Drawing.Point(531, 12);
             this.groupBox_response.Name = "groupBox_response";
-            this.groupBox_response.Size = new System.Drawing.Size(227, 489);
+            this.groupBox_response.Size = new System.Drawing.Size(330, 489);
             this.groupBox_response.TabIndex = 6;
             this.groupBox_response.TabStop = false;
             this.groupBox_response.Text = "Response";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(783, 25);
+            this.richTextBox1.Location = new System.Drawing.Point(867, 21);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(583, 221);
             this.richTextBox1.TabIndex = 7;
@@ -117,7 +117,7 @@
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(783, 267);
+            this.richTextBox2.Location = new System.Drawing.Point(867, 267);
             this.richTextBox2.Name = "richTextBox2";
             this.richTextBox2.Size = new System.Drawing.Size(583, 221);
             this.richTextBox2.TabIndex = 8;
@@ -127,7 +127,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1378, 513);
+            this.ClientSize = new System.Drawing.Size(1462, 513);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.groupBox_response);

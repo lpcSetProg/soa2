@@ -11,7 +11,7 @@
 // - delete outputDictionary, inputDictionary
 // - take care of the special character parsing
 // - get dropdown from a list
-
+// - max/min occur
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -105,12 +105,10 @@ namespace WebServiceSoa
             submitButton.Text = "Send";
             submitButton.Click += new System.EventHandler(submitButton_Clicked);
 
-            inputDictionary = new Dictionary<string, Control>();
-            RenderUIFromParameterList(groupBox_request, currentMethod.requestParams, inputDictionary);
+            RenderUIFromParameterList(groupBox_request, currentMethod.requestParams);
 
             // Response UI
-            outputDictionary = new Dictionary<string, Control>();
-            RenderUIFromParameterList(groupBox_response, currentMethod.responseParams, outputDictionary);
+            RenderUIFromParameterList(groupBox_response, currentMethod.responseParams);
         }
 
         private void submitButton_Clicked(object sender, EventArgs e)
@@ -152,27 +150,41 @@ namespace WebServiceSoa
                     manager.AddNamespace("ns", currentWebService.actionPrefix);
                     XmlNode temp = result.SelectSingleNode("/soap:Envelope/soap:Body/ns:" + currentMethod.name + "Response/ns:" + param.name, manager);
                     XmlNode temp1 = temp.SelectSingleNode(".//ns:Name", manager);
-                    //// what if this is list box
-                    //if (param.control.GetType() == typeof(TextBox))
-                    //{
-                    //    param.control.Text = temp.InnerText;
-                    //}
-                    //else if (param.control.GetType() == typeof(ListBox))
-                    //{
-                    //    if (param.type == TypeCode.String)
-                    //    {
-                    //        XmlNodeList tempChildren = temp.SelectNodes("./ns:string", manager);
-                    //        foreach (XmlNode tempChild in tempChildren)
-                    //        {
-                    //            ((ListBox)param.control).Items.Add(tempChild.InnerText);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        // if it's an array but not string (array of int, date)
-                    //    }
+                    // what if this is list box
+                    if (param.control.GetType() == typeof(TextBox))
+                    {
+                        param.control.Text = temp.InnerText;
+                    }
+                    else if (param.control.GetType() == typeof(RichTextBox))
+                    {
+                        if (param.type == TypeCode.String)
+                        {
+                            //XmlNodeList tempChildren = temp.SelectNodes("./ns:string", manager);
+                            //XmlNodeList tempChildren = temp.SelectNodes("./ns:Definitions/ns:Definition", manager);
+                            XmlNodeList tempChildren = temp.SelectNodes("." + param.link, manager);
+                            foreach (XmlNode tempChild in tempChildren)
+                            {
+                                if (param.isComplex)
+                                {
+                                    foreach (XmlNode element in param.elements)
+                                    {
+                                        ((RichTextBox)param.control).Text += tempChild.SelectSingleNode("." + element.Attributes["link"].InnerText, manager).InnerText + "\n";
+                                    }
 
-                    //}
+                                }
+                                else
+                                {
+                                    ((RichTextBox)param.control).Text += tempChild.InnerXml + "\n";
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            // if it's an array but not string (array of int, date)
+                        }
+
+                    }
 
                 }
             }
@@ -229,7 +241,7 @@ namespace WebServiceSoa
             }
         }
 
-        private void RenderUIFromParameterList(GroupBox targetGroupBox, List<Parameter> parameterList, Dictionary<string, Control> parameterDict)
+        private void RenderUIFromParameterList(GroupBox targetGroupBox, List<Parameter> parameterList)
         {
             int i = 55;
             foreach (Parameter param in parameterList)
